@@ -4,7 +4,7 @@ title: Hedera Improvement Proposal Process
 author: Ken Anderson (@kenthejr), Serg Metelin (@sergmetelin), Simi Hunjan (@SimiHunjan)
 type: Process
 needs-council-approval: No
-status: Draft
+status: Review
 created: 2021-02-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
 updated: 2021-10-27, 2022-05-18
