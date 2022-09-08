@@ -32,16 +32,17 @@ jobs:
 
             for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
               gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
-              echo ${arrayOfStatuses[$i]}
-
-
 
               if [[ ${arrayOfStatuses[$i]} == " Last Call" ]]; then
-                echo "I am in Last Call"
                 gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
               fi
             done
 
+      - name: Delete merged branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+        if: ${{ github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url }}
+        run: git branch -D ${{ github.event.pull_request.head.sha }}
         
             
 
