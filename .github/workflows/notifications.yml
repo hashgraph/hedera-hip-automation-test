@@ -38,11 +38,11 @@ jobs:
               fi
             done
 
-      - name: Delete merged branch
+      - name: Delete branch
+        if: github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url
+        uses: SvanBoxel/delete-merged-branch@main
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-        if: ${{ github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url }}
-        run: git push origin :${{ github.head_ref || github.ref }}
             
 
       
