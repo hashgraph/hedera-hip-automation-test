@@ -42,7 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         if: ${{ github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url }}
-        run: git remote prune
+        run: git remote prune .
             
 
       
