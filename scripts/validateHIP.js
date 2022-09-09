@@ -37,77 +37,77 @@ async function validate(hipPath) {
 }
 
 function validateHeaders(headers) {
-  const errmsgs = [];
+  const errs = [];
   try {
     if (!regexs.hipNum.test(headers)) {
-      errmsgs.push('hip num must be a number use 000 if not yet assigned');
+      errs.push(Error('hip num must be a number use 000 if not yet assigned'));
     }
 
     if (!regexs.title.test(headers)) {
-      errmsgs.push('header must include a title');
+      errs.push(Error('header must include a title'));
     }
 
     if (!regexs.councilApproval.test(headers)) {
-      errmsgs.push('header must specify "needs-council-approval: Yes/No');
+      errs.push(Error('header must specify "needs-council-approval: Yes/No'));
     }
 
     if (!regexs.status.test(headers)) {
-      errmsgs.push('header must include "status: Idea | Draft | Review | Deferred | Withdrawn | Rejected ' + 
-      '| Last Call | Council Review | Accepted | Final | Active | Replaced');
+      errs.push(Error('header must include "status: Idea | Draft | Review | Deferred | Withdrawn | Rejected ' + 
+      '| Last Call | Council Review | Accepted | Final | Active | Replaced'));
     }
 
     if (!regexs.type.test(headers)) {
-      errmsgs.push('header must mast one of the following types exactly ' +
-      '"type: Standards Track | Informational | Process"');
+      errs.push(Error('header must mast one of the following types exactly ' +
+      '"type: Standards Track | Informational | Process"'));
     }
 
     if (!regexs.discussions.test(headers)) {
-      errmsgs.push('header must include discussions page ' +
-      '"discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/xxx"');
+      errs.push(Error('header must include discussions page ' +
+      '"discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/xxx"'));
     }
 
     if (/needs-council-approval: Yes/.test(headers) && /category: Application/.test(headers)) {
-      errmsgs.push('Application category HIPs do not need council approval');
+      errs.push(Error('Application category HIPs do not need council approval'));
     }
 
     if (/needs-council-approval: No/.test(headers)
       && (/category: Service/.test(headers) || /category: Core/.test(headers))) {
-        errmsgs.push('Service and Core categories require council approval');
+        errs.push(Error('Service and Core categories require council approval'));
     }
 
     if (!regexs.createdDate.test(headers)) {
-      errmsgs.push('created date must be in the form "created: YYYY-MM-DD');
+      errs.push(Error('created date must be in the form "created: YYYY-MM-DD'));
     }
 
     if (/category:/.test(headers) && !regexs.category.test(headers)) {
-      errmsgs.push('header must match one of the following categories ' +
-      'exactly "category: Core | Service | API | Mirror | Application"');
+      errs.push(Error('header must match one of the following categories ' +
+      'exactly "category: Core | Service | API | Mirror | Application"'));
     }
 
     if (/updated:/.test(headers) && !regexs.updatedDate.test(headers)) {
-      errmsgs.push('updated date must be in the form "updated: YYYY-MM-DD, YYYY-MM-DD, etc');
+      errs.push(Error('updated date must be in the form "updated: YYYY-MM-DD, YYYY-MM-DD, etc'));
     }
 
     if(/last-call-date-time:/.test(headers) && ! regexs.lastCallDateTime.test(headers)) {
-      errmsgs.push('last-call-date-time should be in the form "last-call-date-time: YYYY-MM-DDTHH:MM:SSZ"');
+      errs.push(Error('last-call-date-time should be in the form "last-call-date-time: YYYY-MM-DDTHH:MM:SSZ"'));
     }
 
     if (/requires:/.test(headers) && !regexs.requires.test(headers)) {
-      errmsgs.push('require field must specify the hip number(s) its referring "requires: hipnum, hipnum(s)"');
+      errs.push(Error('require field must specify the hip number(s) its referring "requires: hipnum, hipnum(s)"'));
     }
 
     if (/replaces:/.test(headers) && !regexs.replaces.test(headers)) {
-      errmsgs.push('replaces field must specify the hip number(s) its referring "replaces: hipnum, hipnum(s)"');
+      errs.push(Error('replaces field must specify the hip number(s) its referring "replaces: hipnum, hipnum(s)"'));
     }
 
     if (/superseded-by/.test(headers) && !regexs.supersededBy.test(headers)) {
-      errmsgs.push('superseded-by field must specify the hip number(s) its referring "superseded-by: hipnum, hipnum(s)"');
+      errs.push(Error('superseded-by field must specify the hip number(s) its referring "superseded-by: hipnum, hipnum(s)"'));
     }
-    if (errmsgs.length > 0 ) {
-      throw errmsgs
+    if (errs.length > 0 ) {
+      throw errs
     }
   } catch (error) {
-    console.log(Error(error));
+    console.log(error);
     process.exit(1);
   }
 }
