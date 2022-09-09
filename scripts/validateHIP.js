@@ -57,7 +57,7 @@ function validateHeaders(headers) {
     }
 
     if (!regexs.type.test(headers)) {
-      errs.push(Error('header must mast one of the following types exactly ' +
+      errs.push(Error('header must match one of the following types exactly ' +
       '"type: Standards Track | Informational | Process"'));
     }
 
@@ -107,7 +107,7 @@ function validateHeaders(headers) {
       throw errs
     }
   } catch (error) {
-    console.log(error);
+    console.log(`You must correct the following headers errors to pass validation: ${error}`);
     process.exit(1);
   }
 }
