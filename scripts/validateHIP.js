@@ -107,7 +107,7 @@ function validateHeaders(headers) {
       throw errs
     }
   } catch (error) {
-    console.log(`You must correct the following headers errors to pass validation: ${error}`);
+    console.log('You must correct the following headers errors to pass validation: ', error);
     process.exit(1);
   }
 }
