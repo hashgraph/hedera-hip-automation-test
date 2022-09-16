@@ -49,7 +49,7 @@ jobs:
             arrayOfFiles=()
             while IFS= read -r; do
                 arrayOfFiles+=("${REPLY}")
-            done < <(git diff forkedRepo/main...HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2 -G'status:' --name-only | grep .md)
+            done < <(git diff forkedRepo/main...HEAD -G'status:' --name-only | grep .md)
             arrayOfStatuses=()
             while IFS= read -r; do
                 arrayOfStatuses+=("${REPLY}")
