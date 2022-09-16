@@ -1,11 +1,12 @@
 ---
-hip: 1
+hip: xxx
 title: Hedera Improvement Proposal Process
 author: Ken Anderson (@kenthejr), Serg Metelin (@sergmetelin), Simi Hunjan (@SimiHunjan)
-type: Process
+type: Standards Track
+category: Core
 needs-council-approval: No
 status: Last Call
-created: 2021-02-11
+created: 20-21-02-11
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
 updated: 2021-10-27, 2022-05-18
 ---
