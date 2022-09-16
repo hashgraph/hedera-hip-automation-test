@@ -32,10 +32,10 @@ jobs:
             done < <(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
 
             for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
-              GH_TOKEN="${{ secrets.GH_ACCESS_TOKEN }}" GITHUB_TOKEN="${{ secrets.GH_ACCESS_TOKEN }}" gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
+              gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
 
               if [[ ${arrayOfStatuses[$i]} == " Last Call" ]]; then
-                GH_TOKEN="${{ secrets.GH_ACCESS_TOKEN }}" GITHUB_TOKEN="${{ secrets.GH_ACCESS_TOKEN }}" gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
+                gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
               fi
             done
 
