@@ -43,6 +43,7 @@ jobs:
         if: github.event.pull_request.head.repo.url != github.event.pull_request.base.repo.url
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
             git remote add forkedRepo ${{ github.event.pull_request.head.repo.clone_url }}
             git fetch forkedRepo
@@ -56,10 +57,10 @@ jobs:
             done < <(git diff forkedRepo/main...HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
 
             for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
-              GH_TOKEN="${{ secrets.GH_ACCESS_TOKEN }}" GITHUB_TOKEN="${{ secrets.GH_ACCESS_TOKEN }}" gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
+              gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
 
               if [[ ${arrayOfStatuses[$i]} == " Last Call" ]]; then
-                GH_TOKEN="${{ secrets.GH_ACCESS_TOKEN }}" GITHUB_TOKEN="${{ secrets.GH_ACCESS_TOKEN }}" gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
+                gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
               fi
             done
 
