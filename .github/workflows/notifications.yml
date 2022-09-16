@@ -18,18 +18,17 @@ jobs:
           fetch-depth: 0
       
       - name: Get status changes and hipnames then dispatch jobs (branch)
-        if: github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             arrayOfFiles=()
             while IFS= read -r; do
                 arrayOfFiles+=("${REPLY}")
-            done < <(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -G'status:' --name-only | grep .md)
+            done < <(git diff HEAD~1..HEAD -G'status:' --name-only | grep .md)
             arrayOfStatuses=()
             while IFS= read -r; do
                 arrayOfStatuses+=("${REPLY}")
-            done < <(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
+            done < <(git diff HEAD~1..HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
 
             for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
               gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
@@ -38,37 +37,6 @@ jobs:
                 gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
               fi
             done
-
-      - name: Get status changes and hipnames then dispatch jobs (fork)
-        if: github.event.pull_request.head.repo.url != github.event.pull_request.base.repo.url
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-        run: |
-            git remote add forkedRepo ${{ github.event.pull_request.head.repo.clone_url }}
-            git fetch forkedRepo
-            arrayOfFiles=()
-            while IFS= read -r; do
-                arrayOfFiles+=("${REPLY}")
-            done < <(git diff forkedRepo/main...HEAD -G'status:' --name-only | grep .md)
-            arrayOfStatuses=()
-            while IFS= read -r; do
-                arrayOfStatuses+=("${REPLY}")
-            done < <(git diff forkedRepo/main...HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
-
-            for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
-              gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
-
-              if [[ ${arrayOfStatuses[$i]} == " Last Call" ]]; then
-                gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
-              fi
-            done
-
-      - name: Delete branch
-        if: github.event.pull_request.head.repo.url == github.event.pull_request.base.repo.url
-        uses: SvanBoxel/delete-merged-branch@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
             
 
       
