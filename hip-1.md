@@ -5,7 +5,7 @@ author: Ken Anderson (@kenthejr), Serg Metelin (@sergmetelin), Simi Hunjan (@Sim
 type: Standards Track
 category: Core
 needs-council-approval: Yes
-status: Last Call
+status: Review
 created: 2022-21-02
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
 updated: 2021-10-27, 2022-05-18
