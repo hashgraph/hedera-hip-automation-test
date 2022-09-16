@@ -44,14 +44,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
+            git remote add forkedRepo ${{ github.event.pull_request.head.repo.url }}
+            git fetch forkedRepo
             arrayOfFiles=()
             while IFS= read -r; do
                 arrayOfFiles+=("${REPLY}")
-            done < <(git diff hashgraph/hedera-hip-automation-test/main...HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2 -G'status:' --name-only | grep .md)
+            done < <(git diff forkedRepo..HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2 -G'status:' --name-only | grep .md)
             arrayOfStatuses=()
             while IFS= read -r; do
                 arrayOfStatuses+=("${REPLY}")
-            done < <(git diff hashgraph/hedera-hip-automation-test/main...HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
+            done < <(git diff forkedRepo..HEAD -G'status:' | egrep "^\+status:" | cut -d ":" -f2)
 
             for ((i=0; i<${#arrayOfFiles[@]}; i++)); do
               gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
