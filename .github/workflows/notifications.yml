@@ -44,7 +44,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
-            git remote add forkedRepo ${{ github.event.pull_request.head.repo.url }}
+            git remote add forkedRepo ${{ github.event.pull_request.head.repo.clone_url }}
             git fetch forkedRepo
             arrayOfFiles=()
             while IFS= read -r; do
