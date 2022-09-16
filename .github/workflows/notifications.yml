@@ -42,7 +42,7 @@ jobs:
       - name: Get status changes and hipnames then dispatch jobs (fork)
         if: github.event.pull_request.head.repo.url != github.event.pull_request.base.repo.url
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
             git remote add forkedRepo ${{ github.event.pull_request.head.repo.clone_url }}
             git fetch forkedRepo
