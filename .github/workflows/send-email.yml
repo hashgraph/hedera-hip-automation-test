@@ -21,7 +21,7 @@ jobs:
           username: hips@hedera.com
           password: ${{secrets.GOOGLE_APP_PASS}}
           subject: ${{ github.event.inputs.filename }} moved into ${{ github.event.inputs.status }}
-          to: ${{ [[ github.event.inputs.status = "Draft" ]] && michael.garber@swirldslabs.com || michaelegarber@gmail.com  }}
+          to: ${{ (github.event.inputs.status == "Draft" ? "michael.garber@swirldslabs.com" || "michaelegarber@gmail.com")  }}
           from: The HIPs repository
           body: This is an automated message, please do not reply. Check https://github.com/hashgraph/hedera-improvement-proposal for more info. Thank you.
           secure: true
