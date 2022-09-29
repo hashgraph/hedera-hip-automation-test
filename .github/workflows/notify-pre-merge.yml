@@ -3,7 +3,7 @@ permissions:
     contents: read
     actions: write
 on:
-  pull_request:
+  pull_request_target:
     types: [opened]
 
 jobs:
