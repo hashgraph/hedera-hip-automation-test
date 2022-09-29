@@ -1,4 +1,4 @@
-name: Dispatch Status Change Notifications (discord and email)
+name: Notifications post merge
 permissions:
     contents: read
     actions: write
@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: Get status changes and hipnames then dispatch jobs (branch)
+      - name: Get status changes and hipnames then dispatch jobs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -34,10 +34,7 @@ jobs:
               gh workflow run send-discord-message.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=${arrayOfStatuses[$i]}"
 
               if [[ ${arrayOfStatuses[$i]} == " Last Call" ]]; then
-                echo "Initiating Last CAll workflow"
+                echo "Initiating Last Call workflow"
                 gh workflow run send-email.yml -f "filename=$(basename ${arrayOfFiles[$i]} .md)" -f "status=Last Call"
               fi
             done
-            
-
-      
