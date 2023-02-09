@@ -8,7 +8,7 @@ needs-council-approval: Yes
 status: Review
 created: 2022-21-02
 discussions-to: https://github.com/hashgraph/hedera-improvement-proposal/discussions/54
-updated: 2021-10-27, 2022-05-18
+updated: 2021-10-27, 2022-05-18, 2023-02-09
 ---
 
 ## What is a HIP?
