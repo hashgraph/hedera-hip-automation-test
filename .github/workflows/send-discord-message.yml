@@ -1,13 +1,13 @@
 name: Send discord notification
 on:
   workflow_dispatch:
-     inputs:
-       filename:
-          type: string
-          required: true
-       status:
-          type: string
-          required: true
+    inputs:
+      filename:
+        type: string
+        required: true
+      status:
+        type: string
+        required: true
 
 jobs:
   StatusChangeNotifications:
@@ -17,6 +17,6 @@ jobs:
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD }}
-        uses: Ilshidur/action-discord@master
+        uses: step-security/action-discord@5e8cd69d2f322a15430c4d13a97659b58031d207 # v0.1.1
         with:
-          args:  "${{ github.event.inputs.filename }} moved into ${{ github.event.inputs.status }} status https://hips.hedera.com/hip/${{ github.event.inputs.filename }}"
+          args: "${{ github.event.inputs.filename }} moved into ${{ github.event.inputs.status }} status https://hips.hedera.com/hip/${{ github.event.inputs.filename }}"
