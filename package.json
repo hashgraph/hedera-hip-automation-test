@@ -1,5 +1,5 @@
 {
-  "name": "hip-automation",
+  "name": "@hashgraph/hip-automation",
   "version": "1.0.0",
   "description": "validates HIP content and updates ",
   "main": "scripts/validateHIP.js",
