@@ -9,12 +9,20 @@ on:
           type: string
           required: true
 
+permissions:
+  contents: read
+
 jobs:
   StatusChangeNotifications:
     runs-on: ubuntu-latest
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        with:
+          egress-policy: audit
+
       - name: Send mail
-        uses: dawidd6/action-send-mail@4226df7daafa6fc901a43789c49bf7ab309066e7 # v3.11.0
+        uses: step-security/action-send-mail@33e713f9796994f5437063c70594af025960a3b1 # v5.0.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
